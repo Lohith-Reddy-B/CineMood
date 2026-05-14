@@ -2,6 +2,9 @@ import { discoverMovies, getTopRated, getTrending } from "@/services/tmdb";
 import { MovieGrid } from "@/components/movies/movie-grid";
 import { LANGUAGE_OPTIONS } from "@/utils/constants";
 
+const HIDDEN_GEM_MAX_VOTES = 1000;
+const HIDDEN_GEM_MIN_RATING = 7.5;
+
 export async function HomeSections() {
   const [trending, topRated, hiddenGems, under2Hours, telugu, thrillers, couple] = await Promise.all([
     getTrending(1),
@@ -37,13 +40,15 @@ export async function HomeSections() {
       <section>
         <h2 className="mb-4 text-2xl font-semibold text-yellow-300">Hidden Gems</h2>
         <MovieGrid
-          initialMovies={hiddenGems.results.filter((movie) => movie.vote_count < 1000 && movie.vote_average >= 7.5)}
+          initialMovies={hiddenGems.results.filter(
+            (movie) => movie.vote_count < HIDDEN_GEM_MAX_VOTES && movie.vote_average >= HIDDEN_GEM_MIN_RATING,
+          )}
           endpoint="/api/movies/discover?sort_by=vote_average.desc&with_genres=18&with_original_language=en"
         />
       </section>
 
       <section>
-        <h2 className="mb-4 text-2xl font-semibold text-yellow-300">Top IMDb Movies</h2>
+        <h2 className="mb-4 text-2xl font-semibold text-yellow-300">Top TMDB Movies</h2>
         <MovieGrid initialMovies={topRated.results} endpoint="/api/movies/top-rated" />
       </section>
 

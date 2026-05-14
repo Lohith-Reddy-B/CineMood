@@ -12,8 +12,10 @@ import {
 } from "firebase/auth";
 import { getFirebaseAuth } from "@/services/firebase";
 
-const SESSION_COOKIE = "cinemood-auth=1; path=/; max-age=2592000; samesite=lax";
-const CLEAR_SESSION_COOKIE = "cinemood-auth=; path=/; max-age=0; samesite=lax";
+const secureCookieFlag =
+  typeof window !== "undefined" && window.location.protocol === "https:" ? "; secure" : "";
+const SESSION_COOKIE = `cinemood-auth=1; path=/; max-age=2592000; samesite=lax${secureCookieFlag}`;
+const CLEAR_SESSION_COOKIE = `cinemood-auth=; path=/; max-age=0; samesite=lax${secureCookieFlag}`;
 
 function setSessionCookie() {
   if (typeof document !== "undefined") document.cookie = SESSION_COOKIE;

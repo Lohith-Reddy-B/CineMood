@@ -1,7 +1,9 @@
+import "server-only";
 import { Movie, MovieResponse } from "@/types/movie";
 
 const TMDB_API_BASE = "https://api.themoviedb.org/3";
 const CACHE_SECONDS = 300;
+const INCLUDE_ADULT_CONTENT = "false";
 
 function tmdbToken() {
   const token = process.env.TMDB_ACCESS_TOKEN;
@@ -12,7 +14,7 @@ function tmdbToken() {
 }
 
 async function request<T>(path: string, params = new URLSearchParams()) {
-  params.set("include_adult", "false");
+  params.set("include_adult", INCLUDE_ADULT_CONTENT);
   const response = await fetch(`${TMDB_API_BASE}${path}?${params.toString()}`, {
     headers: {
       Authorization: `Bearer ${tmdbToken()}`,

@@ -18,9 +18,10 @@ function firebaseConfig() {
 }
 
 export function getFirebaseAuth() {
-  if (!app) {
-    app = getApps()[0] ?? initializeApp(firebaseConfig());
-    auth = getAuth(app);
+  const currentApp = app ?? getApps()[0] ?? initializeApp(firebaseConfig());
+  app = currentApp;
+  if (!auth) {
+    auth = getAuth(currentApp);
   }
-  return auth!;
+  return auth;
 }

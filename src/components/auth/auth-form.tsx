@@ -5,6 +5,15 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { loginWithEmail, loginWithGoogle, sendReset, signupWithEmail } from "@/services/auth";
 
+function authErrorMessage(error: unknown) {
+  const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
+  if (code.includes("invalid-credential")) return "Invalid email or password.";
+  if (code.includes("email-already-in-use")) return "An account already exists with this email.";
+  if (code.includes("weak-password")) return "Password is too weak. Please use a stronger password.";
+  if (code.includes("user-not-found")) return "No account found with this email.";
+  return "We couldn't process your request. Please try again.";
+}
+
 export function AuthForm({ mode }: { mode: "login" | "signup" | "forgot" }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -28,8 +37,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" | "forgot" }) {
         await loginWithEmail(email, password);
         router.push("/browse");
       }
-    } catch {
-      setMessage("Authentication request failed. Check Firebase configuration.");
+    } catch (error) {
+      setMessage(authErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -39,8 +48,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" | "forgot" }) {
     try {
       await loginWithGoogle();
       router.push("/browse");
-    } catch {
-      setMessage("Google sign-in failed.");
+    } catch (error) {
+      setMessage(authErrorMessage(error));
     }
   }
 

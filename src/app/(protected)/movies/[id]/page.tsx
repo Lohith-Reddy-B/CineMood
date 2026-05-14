@@ -34,7 +34,9 @@ export default async function MovieDetailsPage({ params }: { params: Promise<{ i
           <div>
             <h1 className="text-3xl font-semibold text-white">{movie.title}</h1>
             <p className="mt-2 max-w-3xl text-sm text-zinc-200">{movie.overview}</p>
-            <p className="mt-2 text-sm text-yellow-300">⭐ {movie.vote_average.toFixed(1)} • {movie.runtime ?? "N/A"} min</p>
+            <p className="mt-2 text-sm text-yellow-300">
+              ⭐ {movie.vote_average.toFixed(1)} • {movie.runtime ? `${movie.runtime} min` : "Runtime N/A"}
+            </p>
           </div>
         </div>
       </div>
@@ -58,7 +60,7 @@ export default async function MovieDetailsPage({ params }: { params: Promise<{ i
             title="Movie trailer"
             src={`https://www.youtube.com/embed/${trailer.key}`}
             className="h-72 w-full rounded-xl"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           />
         </section>
       )}

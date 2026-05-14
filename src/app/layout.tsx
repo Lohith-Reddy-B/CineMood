@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full bg-[#0f0f0f] text-white">
+    <html lang="en" className="antialiased">
+      <body className="min-h-screen bg-[#0f0f0f] text-white">
         <AuthProvider>
           <AuthGate>
             <div className="min-h-screen">{children}</div>

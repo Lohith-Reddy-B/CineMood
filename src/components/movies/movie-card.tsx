@@ -7,7 +7,14 @@ import { useState } from "react";
 import { Movie } from "@/types/movie";
 import { TMDB_IMAGE_BASE } from "@/utils/constants";
 
-const moodTags = ["Feel-Good", "Thrilling", "Romantic", "Mind-Bending", "Emotional"];
+const genreMoodMap: Record<number, string> = {
+  10749: "Romantic",
+  53: "Thrilling",
+  35: "Feel-Good",
+  9648: "Mind-Bending",
+  18: "Emotional",
+  27: "Intense",
+};
 
 function posterSrc(movie: Movie) {
   return movie.poster_path ? `${TMDB_IMAGE_BASE}/w500${movie.poster_path}` : "/placeholder-poster.svg";
@@ -16,6 +23,10 @@ function posterSrc(movie: Movie) {
 export function MovieCard({ movie }: { movie: Movie }) {
   const year = movie.release_date?.slice(0, 4) || "N/A";
   const [src, setSrc] = useState(posterSrc(movie));
+  const moodTags = (movie.genre_ids ?? [])
+    .map((id) => genreMoodMap[id])
+    .filter(Boolean)
+    .slice(0, 2);
   return (
     <motion.article
       whileHover={{ scale: 1.05 }}
@@ -40,11 +51,13 @@ export function MovieCard({ movie }: { movie: Movie }) {
           <span>{year}</span>
         </div>
         <div className="flex flex-wrap gap-1">
-          {moodTags.slice(0, 2).map((tag) => (
+          {moodTags.length > 0 ? moodTags.map((tag) => (
             <span key={tag} className="rounded bg-pink-500/15 px-2 py-0.5 text-[10px] text-pink-300">
               {tag}
             </span>
-          ))}
+          )) : (
+            <span className="rounded bg-pink-500/15 px-2 py-0.5 text-[10px] text-pink-300">CineMood Pick</span>
+          )}
         </div>
       </div>
     </motion.article>
