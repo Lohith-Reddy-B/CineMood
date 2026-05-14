@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" viewBox="0 0 500 750" fill="none">
+  <rect width="500" height="750" fill="#1A1A1A"/>
+  <rect x="40" y="40" width="420" height="670" rx="16" fill="#0F0F0F" stroke="#FFD700"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#FFD700" font-size="34" font-family="Arial">CineMood</text>
+</svg>
